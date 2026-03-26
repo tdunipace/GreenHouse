@@ -6,11 +6,17 @@ public class PlayerController:MonoBehaviour
 {
     private Camera m_Camera;
     private Rigidbody rb;
+    private Transform camTrans;
+    private Rigidbody camRb;
+
+    private Vector3 moveValues;
+    private Vector3 lookValues;
+    private Vector3 oldLook = Vector3.zero;
 
     public float moveSpeed;
     public float rotationSpeed;
-
-    public bool heldMoveButton;
+    public float lookSensativity;
+    public float lookDrift;
 
     PlayerInput playerInput;
 
@@ -24,62 +30,49 @@ public class PlayerController:MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
 
-        moveAction.performed += weMovin;
-        moveAction.canceled += weStopin;
+        camTrans = m_Camera.gameObject.GetComponent<Transform>();
+        camRb = m_Camera.gameObject.GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    /*    private void OnEnable()
+    private void Update()
+    {
+        //Turn
+        //Do this on transform I guess
+        rb.AddTorque(new Vector3(0.0f, Mathf.Lerp((lookValues.y * rotationSpeed * Time.deltaTime), 0.0f, 0.5f), 0.0f));
+
+        //Movement
+        Vector3 curSpeed = moveValues * moveSpeed;
+        rb.AddForce(curSpeed * Time.deltaTime);
+
+        //Camera Pitch
+        if (lookValues.x != 0)
         {
-            moveAction.action.Enable();
-            lookAction.action.Enable();
-            clickAction.action.Enable();
+            float newPitch = Mathf.Lerp((-lookValues.x * lookSensativity * Time.deltaTime), 0.0f, 0.5f);
+            //camTrans.Rotate(Mathf.Lerp(newLook.x, 0.0f, lookDrift), 0.0f, 0.0f);
+            camRb.AddTorque(newPitch, 0.0f, 0.0f, ForceMode.Impulse);
+            Debug.Log("You looked somewhere");
         }
-
-        private void OnDisable()
+        else
         {
-            moveAction.action.Disable();
-            lookAction.action.Disable();
-            clickAction.action.Disable();
-        }*/
-
-    private void FixedUpdate()
-    {
-        //heldMoveButton = moveAction.IsPressed();
-        GetMovin();
-    }
-
-    //All of this because we dont know how to hold a button?
-    private void weStopin(InputAction.CallbackContext context)
-    {
-        heldMoveButton = false;
-        Debug.Log("We Stopin");
-    }
-
-    private void weMovin(InputAction.CallbackContext context)
-    {
-        heldMoveButton = true;
-        Debug.Log("We Movin");
-    }
-
-    public bool GetMovin()
-    {
-        return heldMoveButton;
+            lookValues = Vector3.zero;
+            Debug.Log("You didn't look");
+        }
     }
 
     public void OnMove(InputValue value)
     {
         var v = value.Get<Vector2>();
-        //rb.MovePosition(v);
+        moveValues = new Vector3(v.x,0.0f,v.y);
 
-        Vector3 mInput = new Vector3(v.x,0.0f,v.y);
-        rb.AddForce(mInput * moveSpeed);
-
-        Debug.Log("You moved with" + v.ToString());
+        //Debug.Log("You moved with" + v.ToString());
     }
 
+    // delta only updates when the mouse moves
     public void OnLook(InputValue value)
     {
-        Debug.Log("You moved the mouse or look stick.");
+        var v = value.Get<Vector2>();
+        lookValues = new Vector3(v.y, v.x, 0.0f);
     }
 
     public void OnAttack()
