@@ -5,18 +5,15 @@ using UnityEngine.InputSystem;
 public class PlayerController:MonoBehaviour 
 {
     private Camera m_Camera;
-    private Rigidbody rb;
-    private Transform camTrans;
+    private Transform playerTrans;
     private Rigidbody camRb;
 
     private Vector3 moveValues;
     private Vector3 lookValues;
-    private Vector3 oldLook = Vector3.zero;
 
     public float moveSpeed;
     public float rotationSpeed;
     public float lookSensativity;
-    public float lookDrift;
 
     PlayerInput playerInput;
 
@@ -24,40 +21,31 @@ public class PlayerController:MonoBehaviour
     public InputAction lookAction;
     public InputAction clickAction;
 
+    public LayerMask layerMask;
+
     void Awake()
     {
         m_Camera = GetComponentInChildren<Camera>();
-        rb = GetComponent<Rigidbody>();
+        playerTrans = gameObject.GetComponent<Transform>();
         playerInput = GetComponent<PlayerInput>();
 
-        camTrans = m_Camera.gameObject.GetComponent<Transform>();
         camRb = m_Camera.gameObject.GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
-        //Turn
+        //Turn Body
         //Do this on transform I guess
-        rb.AddTorque(new Vector3(0.0f, Mathf.Lerp((lookValues.y * rotationSpeed * Time.deltaTime), 0.0f, 0.5f), 0.0f));
+        playerTrans.Rotate(new Vector3(0.0f, Mathf.Lerp((lookValues.y * rotationSpeed * Time.deltaTime), 0.0f, 0.8f), 0.0f));
 
         //Movement
         Vector3 curSpeed = moveValues * moveSpeed;
-        rb.AddForce(curSpeed * Time.deltaTime);
+        playerTrans.Translate(curSpeed * Time.deltaTime);
 
         //Camera Pitch
-        if (lookValues.x != 0)
-        {
-            float newPitch = Mathf.Lerp((-lookValues.x * lookSensativity * Time.deltaTime), 0.0f, 0.5f);
-            //camTrans.Rotate(Mathf.Lerp(newLook.x, 0.0f, lookDrift), 0.0f, 0.0f);
-            camRb.AddTorque(newPitch, 0.0f, 0.0f, ForceMode.Impulse);
-            Debug.Log("You looked somewhere");
-        }
-        else
-        {
-            lookValues = Vector3.zero;
-            Debug.Log("You didn't look");
-        }
+        float newPitch = Mathf.Lerp((-lookValues.x * lookSensativity * Time.deltaTime), 0.0f, 0.8f);
+        camRb.AddRelativeTorque(newPitch, 0.0f, 0.0f, ForceMode.Impulse);
     }
 
     public void OnMove(InputValue value)
@@ -77,6 +65,17 @@ public class PlayerController:MonoBehaviour
 
     public void OnAttack()
     {
-        Debug.Log("You left clicked or attacked.");
+        RaycastHit hit;
+        if(Physics.Raycast(m_Camera.transform.position, m_Camera.transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        {
+            Debug.DrawRay(m_Camera.transform.position, m_Camera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            Debug.Log("Did Hit");
+        }
+        else
+        {
+            Debug.DrawRay(m_Camera.transform.position, m_Camera.transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+            Debug.Log("Did not Hit");
+        }
+        //Debug.Log("You left clicked or attacked.");
     }
 }
