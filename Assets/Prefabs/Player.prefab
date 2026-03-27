@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 10
   rotationSpeed: 100
-  lookSensativity: 20
+  lookSensativity: 100
   moveAction:
     m_Name: Move
     m_Type: 0

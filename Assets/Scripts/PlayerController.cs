@@ -6,7 +6,7 @@ public class PlayerController:MonoBehaviour
 {
     private Camera m_Camera;
     private Transform playerTrans;
-    private Rigidbody camRb;
+    private Transform camTrans;
 
     private Vector3 moveValues;
     private Vector3 lookValues;
@@ -29,7 +29,8 @@ public class PlayerController:MonoBehaviour
         playerTrans = gameObject.GetComponent<Transform>();
         playerInput = GetComponent<PlayerInput>();
 
-        camRb = m_Camera.gameObject.GetComponent<Rigidbody>();
+        //camRb = m_Camera.gameObject.GetComponent<Rigidbody>();
+        camTrans = m_Camera.GetComponent<Transform>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -44,8 +45,19 @@ public class PlayerController:MonoBehaviour
         playerTrans.Translate(curSpeed * Time.deltaTime);
 
         //Camera Pitch
-        float newPitch = Mathf.Lerp((-lookValues.x * lookSensativity * Time.deltaTime), 0.0f, 0.8f);
-        camRb.AddRelativeTorque(newPitch, 0.0f, 0.0f, ForceMode.Impulse);
+        float newPitch = Mathf.Lerp((-lookValues.x * lookSensativity * Time.deltaTime), 0.0f, 0.9f);
+        camTrans.Rotate(newPitch, 0.0f, 0.0f);
+
+        //Trying to stop it flipping, doesn't give a shit!
+/*        float rotationX = camTrans.localRotation.x;
+        if (rotationX < 90.0f && rotationX > -90.0f)
+            camTrans.Rotate(newPitch, 0.0f, 0.0f);
+        else if (rotationX < -90.0f)
+            camTrans.Rotate(-90.0f, 0.0f, 0.0f);
+        else if (rotationX > 90.0f)
+            camTrans.Rotate(90.0f, 0.0f, 0.0f);
+        else
+            camTrans.Rotate(newPitch, 0.0f, 0.0f);*/
     }
 
     public void OnMove(InputValue value)
@@ -70,6 +82,7 @@ public class PlayerController:MonoBehaviour
         {
             Debug.DrawRay(m_Camera.transform.position, m_Camera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             Debug.Log("Did Hit");
+            hit.transform.GetComponent<Animator>().SetTrigger("isClicked");
         }
         else
         {
