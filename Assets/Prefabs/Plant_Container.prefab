@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 668654666833403510}
   - component: {fileID: 1974705887509753350}
   - component: {fileID: 7598985767847805185}
+  - component: {fileID: 901780286157758348}
   m_Layer: 6
   m_Name: Plant_Container
   m_TagString: Plant
@@ -167,3 +168,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &901780286157758348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530195827741183365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf80435326cd6a34fb3563e2a4553eed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantBehavior
+  playerCam: {fileID: 0}
+  myAnim: {fileID: 7598985767847805185}
