@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Plant
+  - Navigation
   layers:
   - Default
   - TransparentFX
