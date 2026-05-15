@@ -60,10 +60,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8496345087481776040, guid: dcd5acb4e0eb4014894b3e8d385e8759, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 208ad515f419e3b42a89d5ef01559832, type: 2}
+    - target: {fileID: -6051135764189051419, guid: dcd5acb4e0eb4014894b3e8d385e8759, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 208ad515f419e3b42a89d5ef01559832, type: 2}
+    - target: {fileID: -2895233431726680007, guid: dcd5acb4e0eb4014894b3e8d385e8759, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fdec5e4d587b59343bb0f1d75a692b27, type: 2}
     - target: {fileID: 919132149155446097, guid: dcd5acb4e0eb4014894b3e8d385e8759, type: 3}
       propertyPath: m_Name
       value: Mandrake_Animations
       objectReference: {fileID: 0}
+    - target: {fileID: 2929246293801715691, guid: dcd5acb4e0eb4014894b3e8d385e8759, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 208ad515f419e3b42a89d5ef01559832, type: 2}
+    - target: {fileID: 3467396647927849571, guid: dcd5acb4e0eb4014894b3e8d385e8759, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 208ad515f419e3b42a89d5ef01559832, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
